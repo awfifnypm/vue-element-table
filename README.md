@@ -17,3 +17,6 @@ isPage: true // 是否显示分页组件 默认为false</br>
 </br>
 列条件查询</br>
 列-本地或后端排序</br>
+
+npm install -g</br>
+npm run serve</br>
