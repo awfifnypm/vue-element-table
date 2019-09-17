@@ -14,6 +14,7 @@
 
 <script>
 import Table from '@/views/Table.vue'
+import { checkAll } from '@/views/defineApi.js'
 export default {
   components: { Table },
   data () {
@@ -36,7 +37,7 @@ export default {
         },
         // 分页参数
         page: {
-          url: 'http://172.103.3.1:10006/provide-web/api/prsBuckle/showBalanceDetails',
+          url: 'http://localhost:8080/api/prsBuckle/showBalanceDetails',
           currentPage: 1, // 当前页
           pageSizes: [10, 20, 30, 40, 50, 100], // 个数选择器
           pageSize: 10, // 显示个数
@@ -150,13 +151,13 @@ export default {
     },
     // 数据初始化
     init (obj) {
-      // this.tables.tableData = this.tableDatas
-      this.tables.tableData = obj
+      this.tables.tableData = this.tableDatas
+      // this.tables.tableData = obj
     },
     tableEvent (eventSource) {
       switch (eventSource.key) {
         case 'selection': // 多选
-          console.log(eventSource.data)
+          console.log(checkAll(eventSource.data, ['memberNumber']))
           break
         case 'radioButton':// 单选
           console.log(eventSource.data)
