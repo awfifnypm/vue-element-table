@@ -14,7 +14,7 @@
                 >
                 <itemChildren :children="item.children"  v-if="item.children"></itemChildren>
                 <template slot-scope="scope">
-                      <slot v-bind="scope.row" :name="item.value">{{scope.row[item.value]}}</slot>
+                      {{item.transitions && utility.transitionFunction(scope.row[item.value],item.transitions) || scope.row[item.value]}}
                 </template>
         </el-table-column>
     </div>

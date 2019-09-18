@@ -40,31 +40,6 @@ export const utility = {
     return [start, end]
   },
 
-  // 数据批量导出 post
-  /* params = {
-     url:'url',
-     obj:{ids: this.idsStr},
-     fileName: '会员管理列表'
-   }
-   batchPostExport(params)
-  */
-  batchPostExport: (params, suffix = 'xlsx') => {
-    axios.post(params.url, params.obj, {
-      responseType: 'blob'
-    })
-      .then(res => {
-        var blob = new Blob([res.data]) // 指定格式为vnd.ms-excel
-        var downloadElement = document.createElement('a')
-        var href = window.URL.createObjectURL(blob) // 创建下载的链接
-        downloadElement.href = href
-        downloadElement.download = `${params.fileName}.${suffix}` // 下载后文件名
-        document.body.appendChild(downloadElement)
-        downloadElement.click() // 点击下载
-        document.body.removeChild(downloadElement) // 下载完成移除元素
-        window.URL.revokeObjectURL(href) // 释放掉blob对象
-      })
-  },
-
   // 金额千位符转换
   // 转换数据只有一个值的，status=1代表是带两位小数点，其它即是不带小数点
   kilobitTransition: (level, status = '1') => {
@@ -110,5 +85,45 @@ export const utility = {
     } else if (A.test(data) || B.test(data) || D.test(data)) {
       return data.replace(/(\d{4})\d*(\d{4})/, '$1*********$2')
     }
+  },
+
+  // 数据管道过滤转换
+  transitionFunction: (value, arr) => {
+    let newValue = null
+    for (let i = 0; i < arr.length; i++) {
+      if (value == arr[i].key) {
+        newValue = arr[i].value
+        break
+      }
+    }
+    return newValue
+  }
+}
+
+// 接口类工具API
+export const requestUtility = {
+  // 数据批量导出 post
+  /* params = {
+     url:'url',
+     obj:{ids: this.idsStr},
+     fileName: '会员管理列表'
+   }
+   batchPostExport(params)
+  */
+  batchPostExport: (params, suffix = 'xlsx') => {
+    axios.post(params.url, params.obj, {
+      responseType: 'blob'
+    })
+      .then(res => {
+        var blob = new Blob([res.data]) // 指定格式为vnd.ms-excel
+        var downloadElement = document.createElement('a')
+        var href = window.URL.createObjectURL(blob) // 创建下载的链接
+        downloadElement.href = href
+        downloadElement.download = `${params.fileName}.${suffix}` // 下载后文件名
+        document.body.appendChild(downloadElement)
+        downloadElement.click() // 点击下载
+        document.body.removeChild(downloadElement) // 下载完成移除元素
+        window.URL.revokeObjectURL(href) // 释放掉blob对象
+      })
   }
 }

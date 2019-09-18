@@ -29,9 +29,9 @@
             v-if="borderParams.index || false"
             type="index">
             </el-table-column>
-            <template>
+            <slot v-for="(item,index) in (tableTitle || [])" :name="item.value" v-bind="item">
                 <el-table-column
-                        v-for="(item,index) in (tableTitle || [])" :key="index + 2"
+                        :key="index + 2"
                         :prop="item.value || null"
                         :label="item.title || null"
                         :width="item.width || null"
@@ -42,13 +42,11 @@
                         :filter-method="item.filters?filterBtn:null">
                         <itemChildren v-if="item.children"  :children="item.children"></itemChildren>
                         <template slot-scope="scope">
-                            <slot v-bind="scope.row" :name="item.value">
                                <!-- 备用，如果调用时没有使用插槽，默认使用的数据 -->
-                              {{scope.row[item.value]}}
-                              </slot>
+                              {{item.transitions && utility.transitionFunction(scope.row[item.value],item.transitions) || scope.row[item.value]}}
                         </template>
                 </el-table-column>
-            </template>
+            </slot>
             <el-table-column v-if="borderParams.operationStatus || false" label="操作" align="center" fixed="right" min-width="200">
                 <template slot-scope="scope">
                     <slot name="operation" v-bind="scope.row"></slot>

@@ -1,9 +1,56 @@
 <template>
     <div>
        <Table v-bind="tables" @eventAll="tableEvent">
-           <!-- v-slot:money => 把money改成对应的表头字段即可获取对应的插糟 -->
-           <template v-slot:money="row">
-                {{row.money | moneyR}}
+           <!-- #money => 把money改成对应的表头字段即可获取对应的插糟 -->
+           <!-- 注:目前只可能获取一级表头插槽，如果对二级以上表头数据，请参照下面例子 -->
+
+           <!-- 一级表头获取插槽使用方法 -->
+           <!-- <template #money>
+                <el-table-column
+                label="余额slot"
+                prop = "money"
+                align = "right"
+                width = "180"
+                >
+                </el-table-column>
+           </template> -->
+
+           <!-- 二级表头获取插槽使用方法，多级以此类推 -->
+           <template #yanshi>
+             <!--
+               此处设置el-table-column会覆盖table组件里默认el-table-column，
+               el-table-column操作比el-table官方组件最外层多了一个template
+              -->
+                <el-table-column
+                label="自定义列一演示"
+                align = "center"
+                width = "180"
+                >
+                    <!--
+                      如果下级数量过多，但又需要在页面操作，此处支持v-for遍历
+                      一、template处改为 <template #yanshi="row">
+                      二、使用row.children数据源遍历
+                      三、通过索引找到要操作项，进行逻辑操作 可使用v-if v-else或其它
+                     -->
+                    <el-table-column
+                    label="自定义列一"
+                    prop = "column1"
+                    align = "center"
+                    width = "180"
+                    >
+                        <template slot-scope="scope">
+                             {{scope.row.column1 + ' Hello'}}
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                    label="自定义列二"
+                    prop = "column2"
+                    align = "left"
+                    width = "180"
+                    >
+                    </el-table-column>
+                </el-table-column>
            </template>
            <!-- 下面为操作列 operationStatus为true使用 -->
            <template v-slot:operation="row">
@@ -16,7 +63,6 @@
 
 <script>
 import Table from '@/views/Table.vue'
-import { utility } from '@/views/defineApi.js'
 export default {
   components: { Table },
   data () {
@@ -47,19 +93,39 @@ export default {
           background: true // 是否带有背景色的分页 默认false
           // layout:"total, sizes, prev, pager, next, jumper" //默认为全部
         },
-        // 表头对象参数
-        // title标题名
-        // value字段名
-        // width单元格宽度 '180'
-        // align对齐方式[left,center,right] 默认center
-        // fixed固定表格[left,center,right]
-        // sortable是否排序[true, false, 'custom'] custom为后台排序
-        // filters列条件查询   [{ text: '名称', value: '值' }] 值会对应表头的value
-
+        /* 表头对象参数
+           1、title标题名
+           2、value字段名
+           3、width单元格宽度 '180'
+           4、align对齐方式[left,center,right] 默认center
+           5、fixed固定表格[left,center,right]
+           6、sortable是否排序[true, false, 'custom'] custom为后台排序
+           7、filters列条件查询   [{ text: '名称', value: '值' }] 值会对应表头的value
+           8、transitions 数据转换   [{ key: '100', value: '一百' }]
+                注：等同于使用管道过滤 如 if(params == '100') reutn '一百' else '无数据'
+        */
         tableTitle: [
+          {
+            title: '演示二级插槽',
+            align: 'center',
+            value: 'yanshi',
+            children: [
+              {
+                title: '列一',
+                value: 'column1',
+                width: '180'
+              },
+              {
+                title: '列二',
+                value: 'column2',
+                width: '180'
+              }
+            ]
+          },
           {
             title: '会员管理',
             align: 'center',
+            value: 'memberManage',
             children: [
               {
                 title: '会员姓名',
@@ -86,7 +152,14 @@ export default {
                     value: 'money',
                     width: '180',
                     sortable: 'custom',
-                    filters: [{ text: '金额100', value: '100' }, { text: '金额200', value: '200' }]
+                    filters: [{ text: '金额100', value: '100' }, { text: '金额200', value: '200' }],
+                    transitions: [
+                      { key: '100', value: '一百' },
+                      { key: '200', value: '二百' },
+                      { key: '300', value: '三百' },
+                      { key: '400', value: '四百' },
+                      { key: '500', value: '五百' }
+                    ]
                   }
                 ]
               },
@@ -119,7 +192,14 @@ export default {
             width: '180',
             align: 'center',
             sortable: true,
-            filters: [{ text: '金额100', value: '100' }, { text: '金额200', value: '200' }]
+            filters: [{ text: '金额100', value: '100' }, { text: '金额200', value: '200' }],
+            transitions: [
+              { key: '100', value: '一百' },
+              { key: '200', value: '二百' },
+              { key: '300', value: '三百' },
+              { key: '400', value: '四百' },
+              { key: '500', value: '五百' }
+            ]
           }
         ],
         tableData: []
@@ -128,24 +208,32 @@ export default {
         {
           id: 1,
           memberName: '彭一姐',
+          column1: '列一v1',
+          column2: '列二v1',
           memberNumber: '00001',
           money: '100'
         },
         {
           id: 2,
           memberName: '王二姐',
+          column1: '列一v2',
+          column2: '列二v2',
           memberNumber: '00002',
           money: '200'
         },
         {
           id: 3,
           memberName: '李小小',
+          column1: '列一v3',
+          column2: '列二v3',
           memberNumber: '00003',
           money: '300'
         },
         {
           id: 4,
           memberName: '孙二哥',
+          column1: '列一v4',
+          column2: '列二v4',
           memberNumber: '00004',
           money: '400'
         }
@@ -168,7 +256,7 @@ export default {
       switch (eventSource.key) {
         case 'selection': // 多选
           // console.log(checkAll(eventSource.data, ['memberNumber']))
-          console.log(utility.checkAll(eventSource.data, ['memberNumber']))
+          console.log(this.utility.checkAll(eventSource.data, ['memberNumber']))
           break
         case 'radioButton':// 单选
           console.log(eventSource.data)
