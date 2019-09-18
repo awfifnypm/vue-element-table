@@ -255,7 +255,6 @@ export default {
     tableEvent (eventSource) {
       switch (eventSource.key) {
         case 'selection': // 多选
-          // console.log(checkAll(eventSource.data, ['memberNumber']))
           console.log(this.utility.checkAll(eventSource.data, ['memberNumber']))
           break
         case 'radioButton':// 单选
