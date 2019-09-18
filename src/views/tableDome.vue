@@ -16,7 +16,7 @@
 
 <script>
 import Table from '@/views/Table.vue'
-import { checkAll } from '@/views/defineApi.js'
+import { utility } from '@/views/defineApi.js'
 export default {
   components: { Table },
   data () {
@@ -39,12 +39,12 @@ export default {
         },
         // 分页参数 除必填项以后，其它可不写
         page: {
-          url: 'http://localhost:8080/#/api/prsBuckle/showBalanceDetails', //必填
+          url: 'http://172.103.3.1:10006/provide-web/api/prsBuckle/showBalanceDetails', // 必填
           currentPage: 1, // 当前页 必填
           pageSizes: [10, 20, 30, 40, 50, 100], // 个数选择器 必填
           pageSize: 10, // 显示个数 必填
           pageInfo: {}, // 分页传参 必填 初始值可为{}
-          background: true, //是否带有背景色的分页 默认false
+          background: true // 是否带有背景色的分页 默认false
           // layout:"total, sizes, prev, pager, next, jumper" //默认为全部
         },
         // 表头对象参数
@@ -160,7 +160,8 @@ export default {
     tableEvent (eventSource) {
       switch (eventSource.key) {
         case 'selection': // 多选
-          console.log(checkAll(eventSource.data, ['memberNumber']))
+          // console.log(checkAll(eventSource.data, ['memberNumber']))
+          console.log(utility.checkAll(eventSource.data, ['memberNumber']))
           break
         case 'radioButton':// 单选
           console.log(eventSource.data)
