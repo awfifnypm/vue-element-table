@@ -1,6 +1,9 @@
 import axios from 'axios'
 // 工具类封装
-function utilityClass () {
+function UtilityClass () {
+  this.BASE_URL = ''
+}
+UtilityClass.prototype = {
   // 封装elementUi table全选后数据提取
   /*
     params 需要操作的数组
@@ -8,7 +11,7 @@ function utilityClass () {
     symbol 需要切换的字符
     使用 checkAll(arr,['id','memberNumber']).id     结果1,2,3,4
     */
-  this.checkAll = (params, keyArr, symbol = ',') => {
+  checkAll: (params, keyArr, symbol = ',') => {
     let paramsData = JSON.parse(JSON.stringify(params))
     let returnData = {}
     let arrObj = {}
@@ -26,10 +29,10 @@ function utilityClass () {
       returnData[key] = arrObj[key].join(symbol)
     }
     return returnData
-  }
+  },
 
   // 自定义时间选择，一般用于筛选的月份选择
-  this.monthPackaging = (status, day = 30) => {
+  monthPackaging: (status, day = 30) => {
     const end = new Date()
     const start = new Date()
     let obj = {
@@ -38,7 +41,7 @@ function utilityClass () {
     }
     obj[status]
     return [start, end]
-  }
+  },
 
   // 数据批量导出 post
   /* params = {
@@ -48,7 +51,7 @@ function utilityClass () {
    }
    batchPostExport(params)
   */
-  this.batchPostExport = (params, suffix = 'xlsx') => {
+  batchPostExport: (params, suffix = 'xlsx') => {
     axios.post(params.url, params.obj, {
       responseType: 'blob'
     })
@@ -63,21 +66,21 @@ function utilityClass () {
         document.body.removeChild(downloadElement) // 下载完成移除元素
         window.URL.revokeObjectURL(href) // 释放掉blob对象
       })
-  }
+  },
 
   // 金额千位符转换
   // 转换数据只有一个值的，status=1代表是带两位小数点，其它即是不带小数点
-  this.KilobitTransition = (level, status = '1') => {
+  kilobitTransition: (level, status = '1') => {
     if (level != undefined && level != null) {
       let A = status == '1' ? Number(level).toFixed(2) : Number(level)
       return '￥' + (status == '1' ? (A || 0).toString().replace(/(\d{1,3})(?=(\d{3})+\.)/g, '$1,') : (A || 0).toString().replace(/(\d{1,3})(?=(\d{3}))/g, '$1,'))
     } else {
       return '￥' + (status == '1' ? '0.00' : '0')
     }
-  }
+  },
 
   // 转换数据中有多个值的，如1000,2000
-  this.multiKilobitTransition = level => {
+  multiKilobitTransition: level => {
     if (level != undefined && level != null) {
       var arr = level.split(',')
       var arrStr = ''
@@ -93,10 +96,10 @@ function utilityClass () {
     } else {
       return '￥' + '0.00'
     }
-  }
+  },
 
   // 信息脱敏
-  this.InfoDesensitization = level => {
+  infoDesensitization: level => {
     let data = level.toString()
     // 身份证
     let A = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$/
@@ -112,4 +115,4 @@ function utilityClass () {
     }
   }
 }
-export const utility = new utilityClass()
+export const utility = new UtilityClass()
