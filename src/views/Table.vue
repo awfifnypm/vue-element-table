@@ -121,9 +121,7 @@ export default {
   },
   methods: {
     init (v) {
-      if (v.data.code == 200) {
-        this.$emit('eventAll', { data: v.data.data, key: 'init' })
-      }
+      this.$emit('eventAll', { data: v, key: 'init' })
     },
     // 排序点击后返回参数
     sortChange (v) {

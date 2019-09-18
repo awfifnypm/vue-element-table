@@ -50,13 +50,18 @@ export default {
       this.pageNumV = val
       this.init()
     },
-    async init () {
+    init () {
       let obj = Object.assign({ pageNum: this.pageNumV, pageSize: this.pageSizeV }, this.pageInfo)
-      let res = await this.axios.post(this.pageURL, obj)
-      if (res.data.code == 200) {
-        this.total = res.data.totalShow
-      }
-      this.$emit('initData', res)
+      this.axios.post(this.pageURL, obj)
+        .then(res => {
+          if (res && res.data.code == 200) {
+            this.total = res.data.totalShow
+          }
+          this.$emit('initData', res)
+        })
+        .catch(() => {
+          this.$emit('initData', { data: { code: '404' } })
+        })
     }
   }
 }

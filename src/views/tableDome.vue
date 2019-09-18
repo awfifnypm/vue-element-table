@@ -153,9 +153,12 @@ export default {
       console.log(row)
     },
     // 数据初始化
-    init (obj) {
-      this.tables.tableData = this.tableDatas
-      // this.tables.tableData = obj
+    init (res) {
+      if (res.data.code == 200) {
+        this.tables.tableData = res.data.data
+      } else {
+        this.tables.tableData = this.tableDatas
+      }
     },
     tableEvent (eventSource) {
       switch (eventSource.key) {

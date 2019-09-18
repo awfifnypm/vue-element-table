@@ -1,9 +1,6 @@
 import axios from 'axios'
 // 工具类封装
-function UtilityClass () {
-  this.BASE_URL = ''
-}
-UtilityClass.prototype = {
+export const utility = {
   // 封装elementUi table全选后数据提取
   /*
     params 需要操作的数组
@@ -115,4 +112,3 @@ UtilityClass.prototype = {
     }
   }
 }
-export const utility = new UtilityClass()
