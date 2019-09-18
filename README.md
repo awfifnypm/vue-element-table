@@ -19,27 +19,27 @@ borderParams: {</br>
 }</br>
 </br>
 ＃分页参数：</br>
-  page: {
-     url: '/api/prsBuckle/showBalanceDetails', // 列表请求接口 必填 
-     currentPage: 1, // 当前页 必填
-     pageSizes: [10, 20, 30, 40, 50, 100], // 页显示个数选择器 必填
-     pageSize: 10, // 页显示个数 必填
-     pageInfo: {}, // 分页传参 必填 初始值可为{}
-     background: true // 是否带有背景色的分页 默认false
-     layout:"total, sizes, prev, pager, next, jumper" //默认为全部
+  page: {</br>
+     url: '/api/prsBuckle/showBalanceDetails', // 列表请求接口 必填 </br>
+     currentPage: 1, // 当前页 必填</br>
+     pageSizes: [10, 20, 30, 40, 50, 100], // 页显示个数选择器 必填</br>
+     pageSize: 10, // 页显示个数 必填</br>
+     pageInfo: {}, // 分页传参 必填 初始值可为{}</br>
+     background: true // 是否带有背景色的分页 默认false</br>
+     layout:"total, sizes, prev, pager, next, jumper" //默认为全部</br>
   }</br>
 </br>
 
-＃表头参数
-  1、title标题名  必填
-  2、value字段名  必填
-  3、width单元格宽度 '180'
-  4、align对齐方式[left,center,right] 默认center
-  5、fixed固定表格[left,center,right]
-  6、sortable是否排序[true, false, 'custom'] custom为后台排序
-  7、filters列条件查询   [{ text: '名称', value: '值' }] 值会对应表头的value
-  8、transitions 数据转换   [{ key: '100', value: '一百' }]
-    注：等同于使用管道过滤 如 if(params == '100') reutn '一百' else '无数据'
+＃表头参数</br>
+  1、title标题名  必填</br>
+  2、value字段名  必填</br>
+  3、width单元格宽度 '180'</br>
+  4、align对齐方式[left,center,right] 默认center</br>
+  5、fixed固定表格[left,center,right]</br>
+  6、sortable是否排序[true, false, 'custom'] custom为后台排序</br>
+  7、filters列条件查询   [{ text: '名称', value: '值' }] 值会对应表头的value</br>
+  8、transitions 数据转换   [{ key: '100', value: '一百' }]</br>
+    注：等同于使用管道过滤 如 if(params == '100') reutn '一百' else '无数据'</br>
 
 npm install -g</br>
 npm run serve</br>
