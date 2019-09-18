@@ -32,9 +32,9 @@ export default {
           maxHeight: 'auto', // 设置最大高度
           showSummary: false, // 是否合计
           spanMethod: null, // 行合并还是列合并
-          index: false, // 是否显示序号
+          index: true, // 是否显示序号
           emptyText: '暂无数据', // 如数据为空的提示语
-          sortable: true, // 是否需要行拖拽
+          sortable: true, // 是否需要行拖拽  注：开启行拖拽后 留意下table的row-key="id"属性，值需要是唯一的，建议ID
           isPage: true // 默认为false
         },
         // 分页参数 除必填项以后，其它可不写
@@ -126,21 +126,25 @@ export default {
       },
       tableDatas: [
         {
+          id: 1,
           memberName: '彭一姐',
           memberNumber: '00001',
           money: '100'
         },
         {
+          id: 2,
           memberName: '王二姐',
           memberNumber: '00002',
           money: '200'
         },
         {
+          id: 3,
           memberName: '李小小',
           memberNumber: '00003',
           money: '300'
         },
         {
+          id: 4,
           memberName: '孙二哥',
           memberNumber: '00004',
           money: '400'

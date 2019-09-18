@@ -137,7 +137,8 @@ export default {
         onEnd ({ newIndex, oldIndex }) {
           const currRow = _this.pageData.splice(oldIndex, 1)[0]
           _this.pageData.splice(newIndex, 0, currRow)
-          _this.changeTableSort({ newIndex, oldIndex }, _this.pageData)
+          console.log(_this.pageData)
+          // _this.changeTableSort({ newIndex, oldIndex }, _this.pageData)
         }
       })
     },
