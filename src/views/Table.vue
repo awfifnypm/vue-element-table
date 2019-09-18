@@ -42,7 +42,10 @@
                         :filter-method="item.filters?filterBtn:null">
                         <itemChildren v-if="item.children"  :children="item.children"></itemChildren>
                         <template slot-scope="scope">
-                            <slot v-bind="scope.row" :name="item.value">{{scope.row[item.value]}}</slot>
+                            <slot v-bind="scope.row" :name="item.value">
+                               <!-- 备用，如果调用时没有使用插槽，默认使用的数据 -->
+                              {{scope.row[item.value]}}
+                              </slot>
                         </template>
                 </el-table-column>
             </template>

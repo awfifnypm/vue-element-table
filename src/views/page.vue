@@ -17,28 +17,23 @@ export default {
   created () {
     if (this.url) {
       this.pageURL = this.url
+      this.init()
     }
-    if (this.pageInfo) {
-      this.pageInfos = this.pageInfo
-    }
-    this.init()
   },
   data () {
     return {
       total: null,
       pageSizeV: null || this.pageSize,
       pageNumV: null || this.currentPage,
-      pageInfos: {},
       pageURL: ''
     }
   },
   watch: {
     pageInfo () {
-      this.pageInfos = this.pageInfo
-      this.pageNumV = 1
+      this.pageNumV = 1 // 此处设置为1，只要解决list有筛选功能时，当页码为2时，你筛选的条件结果只有一页，出现的空白列表的BUG
       this.init()
     },
-    requestUrl () {
+    url () {
       this.pageURL = this.url
       this.init()
     }
@@ -53,7 +48,7 @@ export default {
       this.init()
     },
     async init () {
-      let obj = Object.assign({ pageNum: this.pageNumV, pageSize: this.pageSizeV }, this.pageInfos)
+      let obj = Object.assign({ pageNum: this.pageNumV, pageSize: this.pageSizeV }, this.pageInfo)
       let res = await this.axios.post(this.pageURL, obj)
       if (res.data.code == 200) {
         this.total = res.data.totalShow
