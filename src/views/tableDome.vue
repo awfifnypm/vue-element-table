@@ -1,9 +1,11 @@
 <template>
     <div>
        <Table v-bind="tables" @eventAll="tableEvent">
+           <!-- v-slot:money => 把money改成对应的表头字段即可获取对应的插糟 -->
            <template v-slot:money="row">
                 {{row.money | moneyR}}
            </template>
+           <!-- 下面为操作列 operationStatus为true使用 -->
            <template v-slot:operation="row">
                 <el-button @click.native="delFuc(row)">删除</el-button>
                 <el-button @click.native="delFuc(row)">修改</el-button>
@@ -41,8 +43,7 @@ export default {
           currentPage: 1, // 当前页
           pageSizes: [10, 20, 30, 40, 50, 100], // 个数选择器
           pageSize: 10, // 显示个数
-          pageInfo: {
-          }
+          pageInfo: {} // 分页传参
         },
         // 表头对象参数
         // title标题名
@@ -123,22 +124,22 @@ export default {
       },
       tableDatas: [
         {
-          memberName: '彭宇平',
+          memberName: '彭一姐',
           memberNumber: '00001',
           money: '100'
         },
         {
-          memberName: '王小升',
+          memberName: '王二姐',
           memberNumber: '00002',
           money: '200'
         },
         {
-          memberName: '李晓玲',
+          memberName: '李小小',
           memberNumber: '00003',
           money: '300'
         },
         {
-          memberName: '冼妙腾',
+          memberName: '孙二哥',
           memberNumber: '00004',
           money: '400'
         }
