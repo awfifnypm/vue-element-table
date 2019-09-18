@@ -37,13 +37,15 @@ export default {
           sortable: true, // 是否需要行拖拽
           isPage: true // 默认为false
         },
-        // 分页参数
+        // 分页参数 除必填项以后，其它可不写
         page: {
-          url: 'http://localhost:8080/api/prsBuckle/showBalanceDetails',
-          currentPage: 1, // 当前页
-          pageSizes: [10, 20, 30, 40, 50, 100], // 个数选择器
-          pageSize: 10, // 显示个数
-          pageInfo: {} // 分页传参
+          url: 'http://localhost:8080/#/api/prsBuckle/showBalanceDetails', //必填
+          currentPage: 1, // 当前页 必填
+          pageSizes: [10, 20, 30, 40, 50, 100], // 个数选择器 必填
+          pageSize: 10, // 显示个数 必填
+          pageInfo: {}, // 分页传参 必填 初始值可为{}
+          background: true, //是否带有背景色的分页 默认false
+          // layout:"total, sizes, prev, pager, next, jumper" //默认为全部
         },
         // 表头对象参数
         // title标题名

@@ -1,7 +1,9 @@
 <template>
     <!-- 分页信息 -->
     <div class="block" style="margin:10px 0; float:right">
-      <el-pagination class="paging" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumV" :page-sizes="pageSizes" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination class="paging" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNumV" :page-sizes="pageSizes" :page-size="pageSize" :layout="$attrs.layout || 'total, sizes, prev, pager, next, jumper'" :total="total"
+      :background="$attrs.background || false"
+      >
       </el-pagination>
     </div>
     <!-- <div></div> -->
@@ -13,6 +15,7 @@
 
 <script>
 export default {
+  inheritAttrs: false,
   props: ['url', 'currentPage', 'pageSizes', 'pageSize', 'pageInfo'],
   created () {
     if (this.url) {
