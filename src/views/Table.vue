@@ -9,7 +9,7 @@
         :highlight-current-row="borderParams.highlightCurrentRow || false"
         @current-change="handleCurrentChange"
         :show-summary="borderParams.showSummary || false"
-        ref="table"
+        ref="multipleTable"
         :span-method="borderParams.spanMethod == 'row'?rowMethos: borderParams.spanMethod == 'column'?columnMethos:null"
         :empty-text="borderParams.emptyText || '暂无数据'"
         row-key="id"
@@ -49,7 +49,7 @@
             </slot>
             <el-table-column v-if="borderParams.operationStatus || false" label="操作" align="center" fixed="right" min-width="200">
                 <template slot-scope="scope">
-                    <slot name="operation" v-bind="scope.row"></slot>
+                    <slot name="operation" v-bind="scope"></slot>
                 </template>
             </el-table-column>
         </el-table>
@@ -83,7 +83,8 @@ export default {
       selectionData: [],
       pageData: [],
       parentIdArr: [],
-      position: 0
+      position: 0,
+      defaultCheckAllOnce: true
     }
   },
   watch: {
@@ -114,6 +115,15 @@ export default {
       }
       if (this.borderParams.sortable || false) {
         this.rowDrop() // 用于拖拽排序进来时加载
+      }
+      if ((this.borderParams.isDefaultCheckAll || false) && this.defaultCheckAllOnce) {
+        this.$nextTick(() => {
+          this.pageData.forEach(item => {
+            this.$refs.multipleTable.toggleRowSelection(item)
+          })
+          // 只默认全选一次
+          this.defaultCheckAllOnce = false
+        })
       }
     }
   },
@@ -148,7 +158,7 @@ export default {
         },
         key: 'sort' })
     },
-    //   行合并
+    // 行合并
     rowMethos ({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
         return [1, 2] // 一行 合并 三列
@@ -172,16 +182,16 @@ export default {
         }
       }
     },
-    //   物理筛选
+    // 物理筛选 //可用接口筛选
     filterBtn (value, row, column) {
       const property = column['property']
       return row[property] === value
     },
-    //   多选
-    handleSelectionChange (row) {
-      this.$emit('eventAll', { data: row, key: 'selection' })
-      this.tableRowClassName(row)
-      this.selectionData = row
+    // 多选
+    handleSelectionChange (arr) {
+      this.$emit('eventAll', { data: arr, key: 'selection' })
+      this.tableRowClassName(arr)
+      this.selectionData = arr
     },
     // 单选
     handleCurrentChange (val) {

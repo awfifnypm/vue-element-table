@@ -53,9 +53,9 @@
                 </el-table-column>
            </template>
            <!-- 下面为操作列 operationStatus为true使用 -->
-           <template v-slot:operation="row">
-                <el-button @click.native="delFuc(row)">删除</el-button>
-                <el-button @click.native="delFuc(row)">修改</el-button>
+           <template v-slot:operation="scope">
+                <el-button @click.native="delFuc(scope.row,scope.$index)">删除</el-button>
+                <el-button @click.native="delFuc(scope.row,scope.$index)">修改</el-button>
            </template>
        </Table>
     </div>
@@ -81,7 +81,8 @@ export default {
           index: true, // 是否显示序号
           emptyText: '暂无数据', // 如数据为空的提示语
           sortable: true, // 是否需要行拖拽  注：开启行拖拽后 留意下table的row-key="id"属性，值需要是唯一的，建议ID
-          isPage: true // 默认为false
+          isPage: true, // 默认为false
+          isDefaultCheckAll: true // 是否默认全选所有数据
         },
         // 分页参数 除必填项以后，其它可不写
         page: {
@@ -94,8 +95,8 @@ export default {
           // layout:"total, sizes, prev, pager, next, jumper" //默认为全部
         },
         /* 表头对象参数
-           1、title标题名
-           2、value字段名
+           1、title标题名 必填
+           2、value字段名 必填
            3、width单元格宽度 '180'
            4、align对齐方式[left,center,right] 默认center
            5、fixed固定表格[left,center,right]
@@ -241,8 +242,8 @@ export default {
     }
   },
   methods: {
-    delFuc (row) {
-      console.log(row)
+    delFuc (row, index) {
+      this.tables.tableData.splice(index, 1)
     },
     // 数据初始化
     init (res) {
@@ -255,7 +256,6 @@ export default {
     tableEvent (eventSource) {
       switch (eventSource.key) {
         case 'selection': // 多选
-          // console.log(checkAll(eventSource.data, ['memberNumber']))
           console.log(this.utility.checkAll(eventSource.data, ['memberNumber']))
           break
         case 'radioButton':// 单选
