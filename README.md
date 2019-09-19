@@ -38,7 +38,7 @@ borderParams: {</br>
   4、align对齐方式[left,center,right] 默认center</br>
   5、fixed固定表格[left,center,right]</br>
   6、sortable是否排序[true, false, 'custom'] custom为后台排序</br>
-  7、filters列条件查询   [{ text: '名称', value: '值' }] 值会对应表头的value</br>
+  7、filters列条件查询   [{ text: '名称', value: '值' }] 值要对应表头value</br>
   8、transitions 数据转换   [{ key: '100', value: '一百' }]</br>
     注：等同于使用管道过滤 如 if(params == '100') reutn '一百' else '无数据'</br>
 
