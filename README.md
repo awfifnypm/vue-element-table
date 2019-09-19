@@ -8,7 +8,7 @@
 
 组件控制参数：
 
-```json
+```
 borderParams: {
   operationStatus: true, // 是否显示操作列
   border: false, // 表格是否显示边框
@@ -28,7 +28,7 @@ borderParams: {
 
 分页参数：
 
-```json
+```
   page: {
      url: '/api/prsBuckle/showBalanceDetails', // 列表请求接口 必填 
      currentPage: 1, // 当前页 必填
@@ -54,7 +54,7 @@ borderParams: {
 | width       | 单元格宽度 '180'                                             | 否         |
 
 
-    注：等同于使用管道过滤 如 if(params == '100') reutn '一百' else '无数据'
+​    注：等同于使用管道过滤 如 if(params == '100') reutn '一百' else '无数据'
 
 
 
