@@ -16,6 +16,7 @@ borderParams: {</br>
   emptyText: '暂无数据', // 如数据为空的提示语</br>
   sortable: true, // 是否需要行拖拽</br>
   isPage: true // 是否显示分页组件 默认为false</br>
+  isDefaultCheckAll: true // 是否默认全选所有数据</br>
 }</br>
 </br>
 ＃分页参数：</br>
