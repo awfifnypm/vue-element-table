@@ -22,7 +22,7 @@ borderParams: {
   spanMethod: null, // 行合并还是列合并
   index: false, // 是否显示序号
   emptyText: '暂无数据', // 如数据为空的提示语
-  sortable: true, // 是否需要行拖拽
+  RowDrag: true, // 是否需要行拖拽
   isPage: true // 是否显示分页组件 默认为false
   isDefaultCheckAll: true // 是否默认全选所有数据
   isShowdbTable: true // 是否显示上table勾选，下table显示  必须和selection同时为true
