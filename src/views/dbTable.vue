@@ -164,7 +164,7 @@ export default {
           }
         })
       }
-      if (this.borderParams.sortable || false) {
+      if (this.borderParams.RowDrag || false) {
         this.rowDrop() // 用于拖拽排序进来时加载
       }
     }
@@ -182,7 +182,7 @@ export default {
     },
     // 行拖拽
     rowDrop () {
-      const tbody = document.querySelector('.el-table__body-wrapper tbody')
+      const tbody = document.querySelector('.dbTable .el-table__body-wrapper tbody')
       const _this = this
       Sortable.create(tbody, {
         onEnd ({ newIndex, oldIndex }) {

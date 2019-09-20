@@ -1,7 +1,6 @@
 <template>
     <div>
-       <el-button @click="changData" v-if="tables.borderParams.isShowdbTable">切换数据1</el-button>
-       <el-button @click="changData2" v-if="tables.borderParams.isShowdbTable">切换数据2</el-button>
+       <el-button @click="changData" v-if="tables.borderParams.isShowdbTable" style="margin-bottom:10px !important">切换数据 - 本功能只用于模版切换数据源，上线项目后请把相关方法删除</el-button>
        <Table v-bind="tables" @eventAll="tableEvent">
            <!-- #money => 把money改成对应的表头字段即可获取对应的插糟 -->
            <!-- 注:目前只可能获取一级表头插槽，如果对二级以上表头数据，请参照下面例子 -->
@@ -82,8 +81,8 @@ export default {
           spanMethod: null, // 行合并还是列合并
           index: true, // 是否显示序号
           emptyText: '暂无数据', // 如数据为空的提示语
-          sortable: true, // 是否需要行拖拽  注：开启行拖拽后 留意下table的row-key="id"属性，值需要是唯一的，建议ID
-          isPage: true, // 默认为false
+          RowDrag: true, // 是否需要行拖拽  注：开启行拖拽后 留意下table的row-key="id"属性，值需要是唯一的，建议ID
+          isPage: true, // 是否显示分页 默认为false
           isDefaultCheckAll: false, // 是否默认全选所有数据
           isShowdbTable: true // 是否显示上table勾选，下table显示  必须和selection同时为true
         },
@@ -280,10 +279,7 @@ export default {
   },
   methods: {
     changData () {
-      this.tables.tableData = this.tableDatas
-    },
-    changData2 () {
-      this.tables.tableData = this.xiaoling
+      this.tables.tableData = this.tables.tableData == this.tableDatas ? this.xiaoling : this.tableDatas
     },
     delFuc (row, index) {
       this.tables.tableData.splice(index, 1)
@@ -293,8 +289,7 @@ export default {
       if (res.data.code == 200) {
         this.tables.tableData = res.data.data
       } else {
-        this.tables.tableData = this.xiaoling
-        // this.tables.tableData = this.tableDatas
+        this.tables.tableData = this.tableDatas
       }
     },
     tableEvent (eventSource) {

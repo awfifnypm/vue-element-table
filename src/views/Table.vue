@@ -118,7 +118,7 @@ export default {
           }
         })
       }
-      if (this.borderParams.sortable || false) {
+      if (this.borderParams.RowDrag || false) {
         this.rowDrop() // 用于拖拽排序进来时加载
       }
       if ((this.borderParams.isDefaultCheckAll || false) && this.defaultCheckAllOnce) {
