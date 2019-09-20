@@ -1,5 +1,7 @@
 <template>
     <div>
+       <el-button @click="changData" v-if="tables.borderParams.isShowdbTable">切换数据1</el-button>
+       <el-button @click="changData2" v-if="tables.borderParams.isShowdbTable">切换数据2</el-button>
        <Table v-bind="tables" @eventAll="tableEvent">
            <!-- #money => 把money改成对应的表头字段即可获取对应的插糟 -->
            <!-- 注:目前只可能获取一级表头插槽，如果对二级以上表头数据，请参照下面例子 -->
@@ -82,7 +84,8 @@ export default {
           emptyText: '暂无数据', // 如数据为空的提示语
           sortable: true, // 是否需要行拖拽  注：开启行拖拽后 留意下table的row-key="id"属性，值需要是唯一的，建议ID
           isPage: true, // 默认为false
-          isDefaultCheckAll: true // 是否默认全选所有数据
+          isDefaultCheckAll: false, // 是否默认全选所有数据
+          isShowdbTable: true // 是否显示上table勾选，下table显示  必须和selection同时为true
         },
         // 分页参数 除必填项以后，其它可不写
         page: {
@@ -238,10 +241,50 @@ export default {
           memberNumber: '00004',
           money: '400'
         }
+      ],
+      xiaoling: [
+        {
+          id: 5,
+          memberName: '彭五姐',
+          column1: '列一v5',
+          column2: '列二v5',
+          memberNumber: '00005',
+          money: '100'
+        },
+        {
+          id: 6,
+          memberName: '王六姐',
+          column1: '列一v6',
+          column2: '列二v6',
+          memberNumber: '00006',
+          money: '200'
+        },
+        {
+          id: 7,
+          memberName: '李小七',
+          column1: '列一v7',
+          column2: '列二v7',
+          memberNumber: '00007',
+          money: '300'
+        },
+        {
+          id: 8,
+          memberName: '孙八哥',
+          column1: '列一v8',
+          column2: '列二v8',
+          memberNumber: '00008',
+          money: '400'
+        }
       ]
     }
   },
   methods: {
+    changData () {
+      this.tables.tableData = this.tableDatas
+    },
+    changData2 () {
+      this.tables.tableData = this.xiaoling
+    },
     delFuc (row, index) {
       this.tables.tableData.splice(index, 1)
     },
@@ -250,13 +293,20 @@ export default {
       if (res.data.code == 200) {
         this.tables.tableData = res.data.data
       } else {
-        this.tables.tableData = this.tableDatas
+        this.tables.tableData = this.xiaoling
+        // this.tables.tableData = this.tableDatas
       }
     },
     tableEvent (eventSource) {
       switch (eventSource.key) {
-        case 'selection': // 多选
-          console.log(this.utility.checkAll(eventSource.data, ['memberNumber']))
+        case 'selection': // table多选
+          console.log(this.utility.checkAll(eventSource.data, ['id']))
+          break
+        case 'dbTableSelection': // dbTable多选
+          console.log(this.utility.checkAll(eventSource.data, ['id']))
+          break
+        case 'getingData': // dbTable数据获取
+          console.log(eventSource.data)
           break
         case 'radioButton':// 单选
           console.log(eventSource.data)

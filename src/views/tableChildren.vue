@@ -30,7 +30,7 @@ export default {
     }
   },
   created () {
-    this.childrenData = this.children
+    this.childrenData = [...this.children]
     // 由于v-for出现小BUG，二维数组遍历会出现第一项永远跑到最后面，所以这里使用把第一项放到前面，并删掉最后一项
     this.childrenData.unshift(this.childrenData.pop())
   },

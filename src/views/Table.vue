@@ -54,18 +54,20 @@
             </el-table-column>
         </el-table>
         <page v-if="borderParams.isPage || false" v-bind="page" @initData="init"></page>
+        <dbTable v-bind="{selectionData,borderParams,tableTitle,tableData}" @dbEventAll="dbEventFunction"></dbTable>
     </div>
 </template>
 
 <script>
 import itemChildren from '@/views/tableChildren.vue'
+import dbTable from '@/views/dbTable.vue'
 import page from '@/views/page.vue'
 import Sortable from 'sortablejs' // 这个用于拖拽表格排序
 // 首先需要安装Sortable.js      npm install sortablejs --save
 // 然后引用  import Sortable from 'sortablejs'
 // 需要注意的是element table务必指定row-key，row-key必须是唯一的，如ID，不然会出现排序不对的情况。
 export default {
-  components: { itemChildren, page },
+  components: { itemChildren, page, dbTable },
   props: {
     tableData: Array,
     tableTitle: Array,
@@ -84,12 +86,15 @@ export default {
       pageData: [],
       parentIdArr: [],
       position: 0,
-      defaultCheckAllOnce: true
+      defaultCheckAllOnce: true,
+      dbTableCheckData: []
     }
   },
   watch: {
     tableData (v) {
-    //   这里需要使用深拷贝，要不拖拽后，数据一直覆盖
+      // 获取dbTable页数据
+      this.dbTableCheckData = JSON.parse(sessionStorage.getItem('dbtableData'))
+      //   这里需要使用深拷贝，要不拖拽后，数据一直覆盖
       this.pageData = JSON.parse(JSON.stringify(this.tableData))
       if (this.borderParams.spanMethod || false) {
         this.parentIdArr = [] // 这个清空用于有增删改的列表，如果不清空，在操作后，界面会乱
@@ -124,10 +129,53 @@ export default {
           // 只默认全选一次
           this.defaultCheckAllOnce = false
         })
+      } else {
+        this.$nextTick(() => {
+          this.dbTableCheckData.forEach(item => {
+            this.pageData.forEach(items => {
+              if (item.id === items.id) {
+                this.$refs.multipleTable.toggleRowSelection(items)
+              }
+            })
+          })
+        })
       }
     }
   },
   methods: {
+    // dbTable回调事件
+    dbEventFunction (eventSource) {
+      switch (eventSource.key) {
+        case 'selection': // dbTable多选
+          this.$emit('eventAll', { data: eventSource.data, key: 'dbTableSelection' })
+          break
+        case 'getingData': // dbTable数据获取
+          this.$emit('eventAll', { data: eventSource.data, key: 'getingData' })
+          break
+        case 'deletedRow': // 删除回调
+          let data = eventSource.data
+          let selectionData = JSON.parse(JSON.stringify(this.selectionData))
+          // 取table的勾选数据和删除的数据对比，然后得出去掉删除后的勾选数据
+          selectionData.forEach((item, index) => {
+            if (item.id === data.id) {
+              selectionData.splice(index, 1)
+            }
+          })
+          // 由于elementUI没有去掉单个勾选，所以在操作前，先把所有勾选去掉，然后下面再对比勾选回来
+          this.$refs.multipleTable.clearSelection()
+          this.$nextTick(() => {
+            this.pageData.forEach(item => {
+              selectionData.forEach(items => {
+                if (item.id == items.id) {
+                  console.log(item.id)
+                  this.$refs.multipleTable.toggleRowSelection(item)
+                }
+              })
+            })
+          })
+          break
+      }
+    },
     init (v) {
       this.$emit('eventAll', { data: v, key: 'init' })
     },
@@ -145,8 +193,6 @@ export default {
         onEnd ({ newIndex, oldIndex }) {
           const currRow = _this.pageData.splice(oldIndex, 1)[0]
           _this.pageData.splice(newIndex, 0, currRow)
-          console.log(_this.pageData)
-          // _this.changeTableSort({ newIndex, oldIndex }, _this.pageData)
         }
       })
     },
