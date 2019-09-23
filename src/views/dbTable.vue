@@ -80,7 +80,7 @@ export default {
     selectionData (val) {
       console.log(val, 'val')
       // 判断上一次勾选中的数据是不是为空，如果就把dbtableData数据作为上一次选中的数据
-      this.lastCheckData = this.lastCheckData.length === 0 ? JSON.parse(JSON.stringify(this.dbtableData)) : this.lastCheckData
+      this.lastCheckData = Object.freeze(this.lastCheckData.length === 0 ? JSON.parse(JSON.stringify(this.dbtableData)) : this.lastCheckData)
       let tableData = JSON.parse(JSON.stringify(this.tableData))
       let selectionData = JSON.parse(JSON.stringify(this.selectionData))
 
@@ -98,7 +98,7 @@ export default {
         })
       } else {
         // 否则把tableData当成上一次勾选的，即是全部没勾选
-        this.lastCheckData = JSON.parse(JSON.stringify(this.tableData))
+        this.lastCheckData = Object.freeze(JSON.parse(JSON.stringify(this.tableData)))
         status = true
       }
       // 第二步，如果是全部都无勾选，即把dbtableData与lastCheckData中对应的全部清空

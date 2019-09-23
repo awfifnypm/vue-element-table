@@ -93,7 +93,7 @@ export default {
   watch: {
     tableData (v) {
       // 获取dbTable页数据
-      this.dbTableCheckData = JSON.parse(sessionStorage.getItem('dbtableData'))
+      this.dbTableCheckData = Object.freeze(JSON.parse(sessionStorage.getItem('dbtableData')))
       //   这里需要使用深拷贝，要不拖拽后，数据一直覆盖
       this.pageData = JSON.parse(JSON.stringify(this.tableData))
       if (this.borderParams.spanMethod || false) {
@@ -166,7 +166,7 @@ export default {
           this.$nextTick(() => {
             this.pageData.forEach(item => {
               selectionData.forEach(items => {
-                if (item.id == items.id) {
+                if (item.id === items.id) {
                   console.log(item.id)
                   this.$refs.multipleTable.toggleRowSelection(item)
                 }
