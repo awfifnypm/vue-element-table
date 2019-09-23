@@ -167,13 +167,11 @@ export default {
             this.pageData.forEach(item => {
               selectionData.forEach(items => {
                 if (item.id === items.id) {
-                  console.log(item.id)
                   this.$refs.multipleTable.toggleRowSelection(item)
                 }
               })
             })
           })
-          break
       }
     },
     init (v) {
