@@ -8,20 +8,14 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import VueJsonp from 'vue-jsonp'
 import { utility } from '@/views/defineApi.js'
+import Table from '@/api/tables.js'
 
 Vue.use(ElementUI)
 Vue.prototype.axios = axios
 Vue.prototype.utility = utility
 Vue.config.productionTip = false
 Vue.use(VueJsonp)
-Vue.directive('pin', {
-  bind: function (el, binding, vnode) {
-    console.log(binding)
-    el.style.position = 'fixed'
-    var s = (binding.arg === 'left' ? 'left' : 'top')
-    el.style[s] = binding.value + 'px'
-  }
-})
+Vue.use(Table)
 
 new Vue({
   router,

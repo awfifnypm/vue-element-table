@@ -54,7 +54,7 @@
             </el-table-column>
         </el-table>
         <page v-if="borderParams.isPage || false" v-bind="page" @initData="init"></page>
-        <dbTable v-bind="{selectionData,borderParams,tableTitle,tableData}" @dbEventAll="dbEventFunction"></dbTable>
+        <dbTable v-if="borderParams.isShowdbTable" v-bind="{selectionData,borderParams,tableTitle,tableData}" @dbEventAll="dbEventFunction"></dbTable>
     </div>
 </template>
 
