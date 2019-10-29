@@ -59,15 +59,18 @@
 </template>
 
 <script>
-import itemChildren from '@/views/tableChildren.vue'
-import dbTable from '@/views/dbTable.vue'
-import page from '@/views/page.vue'
+// import itemChildren from '@/views/tableChildren.vue'
+// import dbTable from '@/views/dbTable.vue'
+// import page from '@/views/page.vue'
 import Sortable from 'sortablejs' // 这个用于拖拽表格排序
 // 首先需要安装Sortable.js      npm install sortablejs --save
 // 然后引用  import Sortable from 'sortablejs'
 // 需要注意的是element table务必指定row-key，row-key必须是唯一的，如ID，不然会出现排序不对的情况。
 export default {
-  components: { itemChildren, page, dbTable },
+  components: {
+    itemChildren: () => import('@/views/tableChildren.vue'),
+    page: () => import('@/views/page.vue'),
+    dbTable: () => import('@/views/dbTable.vue') },
   props: {
     tableData: Array,
     tableTitle: Array,

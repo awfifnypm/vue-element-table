@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import itemChildren from '@/views/tableChildren.vue'
+// import itemChildren from '@/views/tableChildren.vue'
 import Sortable from 'sortablejs'
 export default {
-  components: { itemChildren },
+  components: { itemChildren: () => import('@/views/tableChildren.vue') },
   data () {
     return {
       dbtableData: [],
