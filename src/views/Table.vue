@@ -12,7 +12,7 @@
         ref="multipleTable"
         :span-method="borderParams.spanMethod == 'row'?rowMethos: borderParams.spanMethod == 'column'?columnMethos:null"
         :empty-text="borderParams.emptyText || '暂无数据'"
-        row-key="id"
+        :row-key="borderParams.rowKey"
         :default-sort = "{prop: 'index', order: 'ascending'}"
         @sort-change="sortChange"
         >
@@ -37,9 +37,10 @@
                         :width="item.width || null"
                         :align="item.align || 'center'"
                         :fixed="item.fixed || null"
-                        :sortable="item.sortable || false"
+                        :sortable="item.sortable == 'custom' ? 'custom' : item.sortable ? true : false"
                         :filters="item.filters"
-                        :filter-method="item.filters?filterBtn:null">
+                        :filter-method="item.filters?filterBtn:null"
+                        >
                         <itemChildren v-if="item.children"  :children="item.children"></itemChildren>
                         <template slot-scope="scope">
                                <!-- 备用，如果调用时没有使用插槽，默认使用的数据 -->
@@ -54,23 +55,21 @@
             </el-table-column>
         </el-table>
         <page v-if="borderParams.isPage || false" v-bind="page" @initData="init"></page>
-        <dbTable v-if="borderParams.isShowdbTable" v-bind="{selectionData,borderParams,tableTitle,tableData}" @dbEventAll="dbEventFunction"></dbTable>
+        <dbTable v-if="borderParams.isShowdbTable || false" v-bind="{selectionData,borderParams,tableTitle,tableData}" @dbEventAll="dbEventFunction"></dbTable>
     </div>
 </template>
 
 <script>
-// import itemChildren from '@/views/tableChildren.vue'
-// import dbTable from '@/views/dbTable.vue'
-// import page from '@/views/page.vue'
 import Sortable from 'sortablejs' // 这个用于拖拽表格排序
 // 首先需要安装Sortable.js      npm install sortablejs --save
 // 然后引用  import Sortable from 'sortablejs'
 // 需要注意的是element table务必指定row-key，row-key必须是唯一的，如ID，不然会出现排序不对的情况。
 export default {
   components: {
-    itemChildren: () => import('@/views/tableChildren.vue'),
-    page: () => import('@/views/page.vue'),
-    dbTable: () => import('@/views/dbTable.vue') },
+    itemChildren: resolve => { require(['@/views/tableChildren.vue'], resolve) },
+    page: resolve => { require(['@/views/page.vue'], resolve) },
+    dbTable: resolve => { require(['@/views/dbTable.vue'], resolve) }
+  },
   props: {
     tableData: Array,
     tableTitle: Array,
@@ -96,7 +95,7 @@ export default {
   watch: {
     tableData (v) {
       // 获取dbTable页数据
-      this.dbTableCheckData = Object.freeze(JSON.parse(sessionStorage.getItem('dbtableData')))
+      this.dbTableCheckData = Object.freeze(JSON.parse(sessionStorage.getItem('dbtableData'))) || []
       //   这里需要使用深拷贝，要不拖拽后，数据一直覆盖
       this.pageData = JSON.parse(JSON.stringify(this.tableData))
       if (this.borderParams.spanMethod || false) {
@@ -124,7 +123,7 @@ export default {
       if (this.borderParams.RowDrag || false) {
         this.rowDrop() // 用于拖拽排序进来时加载
       }
-      if ((this.borderParams.isDefaultCheckAll || false) && this.defaultCheckAllOnce) {
+      if (this.borderParams.isDefaultCheckAll && this.defaultCheckAllOnce) {
         this.$nextTick(() => {
           this.pageData.forEach(item => {
             this.$refs.multipleTable.toggleRowSelection(item)
@@ -144,6 +143,9 @@ export default {
         })
       }
     }
+  },
+  mounted () {
+
   },
   methods: {
     // dbTable回调事件
@@ -194,6 +196,7 @@ export default {
         onEnd ({ newIndex, oldIndex }) {
           const currRow = _this.pageData.splice(oldIndex, 1)[0]
           _this.pageData.splice(newIndex, 0, currRow)
+          _this.changeTableSort(newIndex, _this.pageData)
         }
       })
     },
@@ -229,7 +232,7 @@ export default {
         }
       }
     },
-    // 物理筛选 //可用接口筛选
+    // 物理筛选
     filterBtn (value, row, column) {
       const property = column['property']
       return row[property] === value

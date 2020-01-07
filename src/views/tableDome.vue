@@ -1,7 +1,7 @@
 <template>
     <div>
-       <el-button @click="changData" v-if="tables.borderParams.isShowdbTable" style="margin-bottom:10px !important">切换数据 - 本功能只用于模版切换数据源，上线项目后请把相关方法删除</el-button>
-       <v-table v-bind="tables" @eventAll="tableEvent">
+       <el-button @click="changData" v-if="tables.borderParams.isShowdbTable || false" style="margin-bottom:10px !important">切换数据 - 本功能只用于模版切换数据源，上线项目后请把相关方法删除</el-button>
+       <tables v-bind="tables" @eventAll="tableEvent">
            <!-- #money => 把money改成对应的表头字段即可获取对应的插糟 -->
            <!-- 注:目前只可能获取一级表头插槽，如果对二级以上表头数据，请参照下面例子 -->
 
@@ -58,18 +58,20 @@
                 <el-button @click.native="delFuc(scope.row,scope.$index)">删除</el-button>
                 <el-button @click.native="delFuc(scope.row,scope.$index)">修改</el-button>
            </template>
-       </v-table>
+       </tables>
     </div>
 </template>
 
 <script>
 // import Table from '@/views/Table.vue'
 export default {
-  // components: { Table },
+  components: {
+    tables: resolve => { require(['@/views/Table.vue'], resolve) }
+  },
   data () {
     return {
       tables: {
-        // 表格参数，不需要可以直接不写,默认为false或null,需要建borderParams空对象
+        // 表格参数，不需要可以直接不写
         borderParams: {
           operationStatus: true, // 是否显示操作列
           border: false, // 表格是否显示边框
@@ -81,12 +83,13 @@ export default {
           spanMethod: null, // 行合并还是列合并
           index: true, // 是否显示序号
           emptyText: '暂无数据', // 如数据为空的提示语
-          RowDrag: false, // 是否需要行拖拽  注：开启行拖拽后 留意下table的row-key="id"属性，值需要是唯一的，建议ID
+          RowDrag: true, // 是否需要行拖拽  注：开启行拖拽后 留意下table的row-key="id"属性，值需要是唯一的，建议ID
+          rowKey: 'id', // RowDrag为true时，必填 填写数据唯一属性 如userId等
           isPage: true, // 是否显示分页 默认为false
           isDefaultCheckAll: false, // 是否默认全选所有数据
           isShowdbTable: true // 是否显示上table勾选，下table显示  必须和selection同时为true
         },
-        // 分页参数 除必填项以后，其它可不写
+        // 分页参数 isPage为true时 除必填项以后，其它可不写
         page: {
           url: 'http://172.103.3.1:10006/provide-web/api/prsBuckle/showBalanceDetails', // 必填
           currentPage: 1, // 当前页 必填
@@ -194,7 +197,7 @@ export default {
             value: 'money',
             width: '180',
             align: 'center',
-            sortable: true,
+            sortable: 'custom',
             filters: [{ text: '金额100', value: '100' }, { text: '金额200', value: '200' }],
             transitions: [
               { key: '100', value: '一百' },

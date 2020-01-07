@@ -8,7 +8,7 @@
                 :width="item.width || null"
                 :align="item.align || 'center'"
                 :fixed="item.fixed || null"
-                :sortable="item.sortable || false"
+                :sortable="item.sortable == 'custom' ? 'custom' : item.sortable ? true : false"
                 :filters="item.filters"
                 :filter-method="item.filters?filterBtn:null"
                 >

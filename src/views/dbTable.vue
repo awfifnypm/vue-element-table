@@ -9,7 +9,7 @@
         :show-summary="borderParams.showSummary || false"
         :span-method="borderParams.spanMethod == 'row'?rowMethos: borderParams.spanMethod == 'column'?columnMethos:null"
         :empty-text="borderParams.emptyText || '暂无数据'"
-        row-key="id"
+        :row-key="borderParams.rowKey"
         :default-sort = "{prop: 'index', order: 'ascending'}"
         >
             <el-table-column
@@ -32,7 +32,7 @@
                         :width="item.width || null"
                         :align="item.align || 'center'"
                         :fixed="item.fixed || null"
-                        :sortable="item.sortable ? true : item.sortable == 'custom' ? true : false"
+                        :sortable="item.sortable == 'custom' ? 'custom' : item.sortable ? true : false"
                         :filters="item.filters"
                         :filter-method="item.filters?filterBtn:null">
                         <itemChildren v-if="item.children"  :children="item.children"></itemChildren>
@@ -54,7 +54,8 @@
 // import itemChildren from '@/views/tableChildren.vue'
 import Sortable from 'sortablejs'
 export default {
-  components: { itemChildren: () => import('@/views/tableChildren.vue') },
+  components: { itemChildren: resolve => { require(['@/views/tableChildren.vue'], resolve) }
+  },
   data () {
     return {
       dbtableData: [],
