@@ -24,6 +24,7 @@ borderParams: {
   index: false, // 是否显示序号
   emptyText: '暂无数据', // 如数据为空的提示语
   RowDrag: true, // 是否需要行拖拽
+  rowKey: 'id', // RowDrag为true时，必填 填写数据唯一属性 如userId等
   isPage: true // 是否显示分页组件 默认为false
   isDefaultCheckAll: true // 是否默认全选所有数据
   isShowdbTable: true // 是否显示上table勾选，下table显示  必须和selection同时为true
