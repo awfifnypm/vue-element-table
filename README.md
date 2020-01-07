@@ -1,10 +1,14 @@
-# VUE table表格+分页
+# VUE  elementUI table
 
 ## 描述
 
 在日常开发中，需要大量用到table组件，所以闲时就整合下
 
 注：组件在开发中，数据来源于分页URL请求，但是在开发中，有时候接口有问题，所以利用catch失败回调后，再获取静态数据，所以如果没有接口的伙伴们，那就多等一小会，静态数据就会出来，如果用于线上项目时，一定要把静态数据去掉，把tableDome组件里面的init方法的else逻辑删掉，同时留意下page组件里的catch
+
+如不需要二次开发，请使用npm依赖包
+npm i vue2-el-table
+vue2-el-table npm地址 https://www.npmjs.com/package/vue2-el-table
 
 **本组件集成了下列:**
 
