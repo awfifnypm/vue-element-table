@@ -16,7 +16,7 @@
 <script>
 export default {
   inheritAttrs: false,
-  props: ['url', 'currentPage', 'pageSizes', 'pageSize', 'pageInfo'],
+  props: ['url', 'currentPage', 'pageSizes', 'pageSize', 'pageInfo', 'method'],
   created () {
     if (this.url) {
       this.pageURL = this.url
@@ -52,10 +52,14 @@ export default {
     },
     init () {
       let obj = Object.assign({ pageNum: this.pageNumV, pageSize: this.pageSizeV }, this.pageInfo)
-      this.axios.post(this.pageURL, obj)
+      this.axios({
+        method: this.method || 'get',
+        url: this.pageURL,
+        data: obj
+      })
         .then(res => {
           if (res && res.data.code == 200) {
-            this.total = res.data.totalShow
+            this.total = res.data.total
           }
           this.$emit('initData', res)
         })

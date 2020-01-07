@@ -8,7 +8,8 @@
 
 如不需要二次开发，请使用npm依赖包
 npm i vue2-el-table
-vue2-el-table npm地址 https://www.npmjs.com/package/vue2-el-table
+
+vue2-el-table  npm地址 https://www.npmjs.com/package/vue2-el-table
 
 **本组件集成了下列:**
 
@@ -52,16 +53,16 @@ borderParams: {
 表头参数：
 必填项除外，其它都可不写
 
-| 名称        | 描述                                                         | 是否必填   |
-| ----------- | ------------------------------------------------------------ | ---------- |
-| title       | 标题名                                                       | 必填       |
-| value       | 字段名                                                       | 必填       |
-| align       | 对齐方式[left,center,right]                                  | 默认center |
-| fixed       | 固定表格                                                     | 否         |
-| sortable    | 是否排序[true, false, 'custom'] custom为后台排序             | 否         |
-| filters     | 列条件查询   [{ text: '名称', value: '值' }] 值要对应表头value | 否         |
-| transitions | 数据转换   [{ key: '100', value: '一百' }]                   | 否         |
-| width       | 单元格宽度 '180'                                             | 否         |
+| 名称          | 描述                                       | 是否必填     |
+| ----------- | ---------------------------------------- | -------- |
+| title       | 标题名                                      | 必填       |
+| value       | 字段名                                      | 必填       |
+| align       | 对齐方式[left,center,right]                  | 默认center |
+| fixed       | 固定表格                                     | 否        |
+| sortable    | 是否排序[true, false, 'custom'] custom为后台排序  | 否        |
+| filters     | 列条件查询   [{ text: '名称', value: '值' }] 值要对应表头value | 否        |
+| transitions | 数据转换   [{ key: '100', value: '一百' }]     | 否        |
+| width       | 单元格宽度 '180'                              | 否        |
 
 
 ​    注：等同于使用管道过滤 如 if(params == '100') reutn '一百' else '无数据'
