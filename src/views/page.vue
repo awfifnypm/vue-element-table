@@ -58,13 +58,7 @@ export default {
         data: obj
       })
         .then(res => {
-          if (res && res.data.code == 200) {
-            this.total = res.data.total
-          }
-          this.$emit('initData', res)
-        })
-        .catch(() => {
-          this.$emit('initData', { data: { code: '404' } })
+          this.$emit('initData', { res })
         })
     }
   }

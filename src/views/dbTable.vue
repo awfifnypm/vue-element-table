@@ -6,6 +6,7 @@
         :row-class-name="tableRowClassName"
         :max-height="borderParams.maxHeight || 'auto'"
         :stripe="borderParams.stripe || false"
+        ref="dbMultipleTable"
         :show-summary="borderParams.showSummary || false"
         :span-method="borderParams.spanMethod == 'row'?rowMethos: borderParams.spanMethod == 'column'?columnMethos:null"
         :empty-text="borderParams.emptyText || '暂无数据'"
@@ -141,6 +142,13 @@ export default {
       sessionStorage.setItem('dbtableData', JSON.stringify(this.dbtableData))
       // 记录本次勾选中的数据
       this.lastCheckData = [...val]
+
+      // 默认勾选
+      this.$nextTick(() => {
+        val.forEach(item => {
+          this.$refs.dbMultipleTable.toggleRowSelection(item)
+        })
+      })
     },
     dbtableData (v) {
       if (this.borderParams.spanMethod || false) {
@@ -230,7 +238,7 @@ export default {
     // 多选勾选后当前背景高亮
     tableRowClassName ({ row, rowIndex }) {
       let color = ''
-      this.selectionData.forEach((item, i) => {
+      this.dbTableSelectionData.forEach((item, i) => {
         if (item === row) {
           color = 'warning-row'
         }

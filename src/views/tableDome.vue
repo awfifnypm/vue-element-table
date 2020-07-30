@@ -97,6 +97,7 @@ export default {
           pageSize: 10, // 显示个数 必填
           pageInfo: {}, // 分页传参 必填 初始值可为{}
           background: true // 是否带有背景色的分页 默认false
+          // method: 'get' // 默认为get
           // layout:"total, sizes, prev, pager, next, jumper" //默认为全部
         },
         /* 表头对象参数
@@ -289,11 +290,7 @@ export default {
     },
     // 数据初始化
     init (res) {
-      if (res.data.code == 200) {
-        this.tables.tableData = res.data.data
-      } else {
-        this.tables.tableData = this.tableDatas
-      }
+      console.log(res)
     },
     tableEvent (eventSource) {
       switch (eventSource.key) {
@@ -315,7 +312,7 @@ export default {
         case 'custom':// 后台排序
           console.log(eventSource.data)
           break
-        case 'init':// 数据初始化
+        case 'init': // 数据初始
           this.init(eventSource.data)
           break
       }
